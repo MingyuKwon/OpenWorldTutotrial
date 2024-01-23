@@ -8,6 +8,8 @@
 
 class UCapsuleComponent;
 class UFloatingPawnMovement;
+class UCameraComponent;
+class USpringArmComponent;
 
 UCLASS()
 class OPENWORLDTUTORIAL_API ABird : public APawn
@@ -33,11 +35,18 @@ protected:
 	USkeletalMeshComponent* skeletalComp;
 
 	UPROPERTY(EditDefaultsOnly)
+	USpringArmComponent* springArmComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	UCameraComponent* cameraComp;
+
+	UPROPERTY(EditDefaultsOnly)
 	UFloatingPawnMovement* floatingPawmMovenet;
 
 private:
 	void MoveForward(float value);
-	void MoveRight(float value);
+	void Turn(float value);
+	void LookUp(float value);
 
 	UPROPERTY(EditDefaultsOnly)
 	float MoveSpeed = 10.f;
