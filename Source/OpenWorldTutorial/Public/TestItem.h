@@ -14,13 +14,20 @@ class OPENWORLDTUTORIAL_API ATestItem : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ATestItem();
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	template<typename T>
+	T Avg(T first, T second);
 
 };
+
+template<typename T>
+inline T ATestItem::Avg(T first, T second)
+{
+	return (first + second) / 2;
+}
