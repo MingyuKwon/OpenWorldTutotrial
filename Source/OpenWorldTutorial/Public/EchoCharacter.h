@@ -37,10 +37,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 100.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* springArmComp;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* cameraComp;
 
 };

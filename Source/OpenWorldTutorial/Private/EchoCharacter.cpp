@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -16,6 +17,9 @@ AEchoCharacter::AEchoCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Comp"));
 	springArmComp->SetupAttachment(RootComponent);
