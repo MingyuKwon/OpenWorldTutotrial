@@ -33,6 +33,8 @@ protected:
 	void Turn(float value);
 	void LookUp(float value);
 
+	virtual void Jump() override;
+
 private:
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 100.f;

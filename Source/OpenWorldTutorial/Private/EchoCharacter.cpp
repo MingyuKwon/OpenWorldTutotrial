@@ -78,6 +78,14 @@ void AEchoCharacter::LookUp(float value)
 	}
 }
 
+void AEchoCharacter::Jump()
+{
+	if (Controller)
+	{
+		Super::Jump();
+	}
+}
+
 // Called every frame
 void AEchoCharacter::Tick(float DeltaTime)
 {
@@ -93,5 +101,7 @@ void AEchoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AEchoCharacter::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AEchoCharacter::Turn);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AEchoCharacter::LookUp);
+
+	PlayerInputComponent->BindAction(TEXT("Jump"),EInputEvent::IE_Pressed , this, &AEchoCharacter::Jump);
 }
 
