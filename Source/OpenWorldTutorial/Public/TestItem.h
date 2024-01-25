@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "TestItem.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class OPENWORLDTUTORIAL_API ATestItem : public AActor
 {
@@ -24,6 +26,19 @@ private:
 	template<typename T>
 	T Avg(T first, T second);
 
+	UFUNCTION()
+	void ComponentOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+
+	UFUNCTION()
+	void ComponentOverlapEndCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+
+	UPROPERTY(EditDefaultsOnly)
+	USphereComponent* sphereComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* meshComp;
 };
 
 template<typename T>

@@ -3,6 +3,7 @@
 
 #include "TestItem.h"
 #include "OpenWorldTutorial/DrawDebugMacro.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 ATestItem::ATestItem()
@@ -10,12 +11,40 @@ ATestItem::ATestItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Comp"));
+	RootComponent = meshComp;
+
+	sphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
+	sphereComp->SetupAttachment(RootComponent);
+
+	
+
 }
 
 // Called when the game starts or when spawned
 void ATestItem::BeginPlay()
 {
 	Super::BeginPlay();	
+	sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ATestItem::ComponentOverlapBeginCallback);
+	sphereComp->OnComponentEndOverlap.AddDynamic(this, &ATestItem::ComponentOverlapEndCallback);
+}
+
+
+
+void ATestItem::ComponentOverlapBeginCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 10.f, FColor::Blue, OtherActor->GetName());
+	}
+}
+
+void ATestItem::ComponentOverlapEndCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 10.f, FColor::Red, OtherActor->GetName());
+	}
 }
 
 // Called every frame
@@ -24,7 +53,6 @@ void ATestItem::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	FVector MovingVector = FVector(100.f, 0.f, 0.f) * DeltaTime;
 	AddActorWorldOffset(FVector(1.f,0.f,0.f));
-	DRAW_SPHERE_SINGLEFRAME(GetActorLocation());
 
 }
 
