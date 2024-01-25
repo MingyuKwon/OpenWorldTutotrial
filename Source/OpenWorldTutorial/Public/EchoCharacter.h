@@ -32,8 +32,10 @@ protected:
 	void MoveRight(float value);
 	void Turn(float value);
 	void LookUp(float value);
+	
 
 	virtual void Jump() override;
+	void Equip();
 
 private:
 	UPROPERTY(EditAnywhere)

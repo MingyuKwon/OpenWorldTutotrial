@@ -22,23 +22,25 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-	template<typename T>
-	T Avg(T first, T second);
+	UFUNCTION()
+	virtual void ComponentOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void ComponentOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-
-	UFUNCTION()
-	void ComponentOverlapEndCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
+	virtual void ComponentOverlapEndCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UPROPERTY(EditDefaultsOnly)
 	USphereComponent* sphereComp;
 
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* meshComp;
+
+private:
+	template<typename T>
+	T Avg(T first, T second);
+
+	UPROPERTY(VisibleDefaultsOnly)
+	float runningTime;
+	
 };
 
 template<typename T>

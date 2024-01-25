@@ -86,6 +86,11 @@ void AEchoCharacter::Jump()
 	}
 }
 
+void AEchoCharacter::Equip()
+{
+
+}
+
 // Called every frame
 void AEchoCharacter::Tick(float DeltaTime)
 {
@@ -103,5 +108,6 @@ void AEchoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AEchoCharacter::LookUp);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"),EInputEvent::IE_Pressed , this, &AEchoCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Equip"), EInputEvent::IE_Pressed, this, &AEchoCharacter::Equip);
 }
 

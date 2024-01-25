@@ -27,6 +27,7 @@ void ATestItem::BeginPlay()
 	Super::BeginPlay();	
 	sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ATestItem::ComponentOverlapBeginCallback);
 	sphereComp->OnComponentEndOverlap.AddDynamic(this, &ATestItem::ComponentOverlapEndCallback);
+	runningTime = 0;
 }
 
 
@@ -51,8 +52,22 @@ void ATestItem::ComponentOverlapEndCallback( UPrimitiveComponent* OverlappedComp
 void ATestItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FVector MovingVector = FVector(100.f, 0.f, 0.f) * DeltaTime;
-	AddActorWorldOffset(FVector(1.f,0.f,0.f));
+	runningTime += DeltaTime;
+
+	if (!GetOwner())
+	{
+		float SinValue = FMathf::Sin(runningTime) / 3;
+		FVector MovingVector = FVector(0.f, 0.f, SinValue) * 50 * DeltaTime;
+		AddActorWorldOffset(MovingVector);
+	}
+	else
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(2, 10.f, FColor::Yellow, GetOwner()->GetName());
+		}
+	}
+	
 
 }
 
