@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "CharacterType.h"
 #include "EchoAnimInstance.generated.h"
 
 class AEchoCharacter;
@@ -29,5 +30,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Movement")
 	bool isFalling;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Movement | CharacterState")
+	ECharacterState CharacterState;
+
 
 };

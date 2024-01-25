@@ -13,6 +13,8 @@ UCLASS()
 class OPENWORLDTUTORIAL_API AWeapon : public ATestItem
 {
 	GENERATED_BODY()
+public:
+	void Equip(ACharacter* InParent, FName InSocketName);
 	
 protected:
 

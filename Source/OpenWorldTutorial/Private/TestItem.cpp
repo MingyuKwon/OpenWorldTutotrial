@@ -4,6 +4,7 @@
 #include "TestItem.h"
 #include "OpenWorldTutorial/DrawDebugMacro.h"
 #include "Components/SphereComponent.h"
+#include "EchoCharacter.h"
 
 // Sets default values
 ATestItem::ATestItem()
@@ -34,17 +35,20 @@ void ATestItem::BeginPlay()
 
 void ATestItem::ComponentOverlapBeginCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (GEngine)
+	AEchoCharacter* character = Cast<AEchoCharacter>(OtherActor);
+	if (character)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 10.f, FColor::Blue, OtherActor->GetName());
+		character->SetOverlappingItem(this);
 	}
+	
 }
 
 void ATestItem::ComponentOverlapEndCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (GEngine)
+	AEchoCharacter* character = Cast<AEchoCharacter>(OtherActor);
+	if (character)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 10.f, FColor::Red, OtherActor->GetName());
+		character->SetOverlappingItem(nullptr);
 	}
 }
 

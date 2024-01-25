@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "CharacterType.h"
 #include "EchoCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
+class ATestItem;
+
 
 UCLASS()
 class OPENWORLDTUTORIAL_API AEchoCharacter : public ACharacter
@@ -24,6 +27,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	FORCEINLINE void SetOverlappingItem(ATestItem* item) {nearItem = item;}
+	FORCEINLINE ECharacterState GetCharacterState() const { return characterState; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -35,9 +41,11 @@ protected:
 	
 
 	virtual void Jump() override;
-	void Equip();
+	void EKeyPressed();
 
 private:
+	ECharacterState characterState = ECharacterState::ECS_Unequipped;
+
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 100.f;
 
@@ -46,5 +54,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* cameraComp;
+
+	UPROPERTY(VisibleAnywhere)
+	ATestItem* nearItem;
 
 };

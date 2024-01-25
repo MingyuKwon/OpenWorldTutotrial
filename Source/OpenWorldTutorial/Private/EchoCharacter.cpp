@@ -6,6 +6,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "TestItem.h"
+#include "item/Weapon.h"
 
 
 // Sets default values
@@ -86,9 +88,14 @@ void AEchoCharacter::Jump()
 	}
 }
 
-void AEchoCharacter::Equip()
+void AEchoCharacter::EKeyPressed()
 {
-
+	AWeapon* weapon = Cast<AWeapon>(nearItem);
+	if (weapon)
+	{
+		weapon->Equip(this, TEXT("right hand socket"));
+		characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	}
 }
 
 // Called every frame
@@ -108,6 +115,6 @@ void AEchoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AEchoCharacter::LookUp);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"),EInputEvent::IE_Pressed , this, &AEchoCharacter::Jump);
-	PlayerInputComponent->BindAction(TEXT("Equip"), EInputEvent::IE_Pressed, this, &AEchoCharacter::Equip);
+	PlayerInputComponent->BindAction(TEXT("Equip"), EInputEvent::IE_Pressed, this, &AEchoCharacter::EKeyPressed);
 }
 
