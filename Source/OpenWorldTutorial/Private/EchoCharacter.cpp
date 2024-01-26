@@ -98,6 +98,21 @@ void AEchoCharacter::EKeyPressed()
 	{
 		weapon->Equip(this, TEXT("right hand socket"));
 		characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+		nearItem = nullptr;
+		obtainWeapon = weapon;
+	}
+	else
+	{
+		if (CanDisarm())
+		{
+			PlayEquipMontage(TEXT("UnEquip"));
+			characterState = ECharacterState::ECS_Unequipped;
+		}
+		else if (CanArm())
+		{
+			PlayEquipMontage(TEXT("Equip"));
+			characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+		}
 	}
 }
 
@@ -136,6 +151,16 @@ void AEchoCharacter::PlayAttackMontage()
 	}
 }
 
+void AEchoCharacter::PlayEquipMontage(FName SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && equipMontage)
+	{
+		AnimInstance->Montage_Play(equipMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, equipMontage);
+	}
+}
+
 void AEchoCharacter::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
@@ -143,7 +168,24 @@ void AEchoCharacter::AttackEnd()
 
 bool AEchoCharacter::CanAttack()
 {
-	return ActionState == EActionState::EAS_Unoccupied && characterState != ECharacterState::ECS_Unequipped;
+	return ActionState == EActionState::EAS_Unoccupied 
+		&& characterState != ECharacterState::ECS_Unequipped;
+}
+
+
+
+bool AEchoCharacter::CanDisarm()
+{
+	return ActionState == EActionState::EAS_Unoccupied && 
+		characterState != ECharacterState::ECS_Unequipped && 
+		equipMontage && obtainWeapon;
+}
+
+bool AEchoCharacter::CanArm()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		characterState == ECharacterState::ECS_Unequipped &&
+		equipMontage && obtainWeapon;
 }
 
 // Called every frame

@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class ATestItem;
 class UAnimMontage;
+class AWeapon;
 
 
 UCLASS()
@@ -51,8 +52,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
-
 	bool CanAttack();
+
+	void PlayEquipMontage(FName SectionName);
+	bool CanDisarm();
+
+	bool CanArm();
 
 private:
 	ECharacterState characterState = ECharacterState::ECS_Unequipped;
@@ -72,8 +77,14 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	ATestItem* nearItem;
 
+	UPROPERTY(VisibleAnywhere, Category = "Weapon")
+	AWeapon* obtainWeapon;
+
 	// Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* attackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* equipMontage;
 
 };
