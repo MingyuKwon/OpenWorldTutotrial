@@ -15,6 +15,8 @@ class OPENWORLDTUTORIAL_API AWeapon : public ATestItem
 	GENERATED_BODY()
 public:
 	void Equip(ACharacter* InParent, FName InSocketName);
+
+	void AttachActortoSocket(ACharacter* InParent, const FName& InSocketName);
 	
 protected:
 

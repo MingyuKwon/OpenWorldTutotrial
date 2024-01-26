@@ -41,7 +41,7 @@ void AEchoCharacter::BeginPlay()
 
 void AEchoCharacter::MoveForward(float value)
 {
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState == EActionState::EAS_Attacking || ActionState == EActionState::EAS_EquippingWeapon) return;
 	if (Controller && value != 0)
 	{
 		const FRotator ControlRotaion = GetControlRotation();
@@ -54,7 +54,7 @@ void AEchoCharacter::MoveForward(float value)
 
 void AEchoCharacter::MoveRight(float value)
 {
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState == EActionState::EAS_Attacking || ActionState == EActionState::EAS_EquippingWeapon) return;
 	if (Controller && value != 0)
 	{
 		const FRotator ControlRotaion = GetControlRotation();
@@ -107,11 +107,13 @@ void AEchoCharacter::EKeyPressed()
 		{
 			PlayEquipMontage(TEXT("UnEquip"));
 			characterState = ECharacterState::ECS_Unequipped;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 		else if (CanArm())
 		{
 			PlayEquipMontage(TEXT("Equip"));
 			characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 	}
 }
@@ -186,6 +188,29 @@ bool AEchoCharacter::CanArm()
 	return ActionState == EActionState::EAS_Unoccupied &&
 		characterState == ECharacterState::ECS_Unequipped &&
 		equipMontage && obtainWeapon;
+}
+
+void AEchoCharacter::Disarm()
+{
+	if (obtainWeapon)
+	{
+		obtainWeapon->AttachActortoSocket(this, TEXT("SwordCase Socket"));
+		characterState = ECharacterState::ECS_Unequipped;
+	}
+}
+
+void AEchoCharacter::Arm()
+{
+	if (obtainWeapon)
+	{
+		obtainWeapon->AttachActortoSocket(this, TEXT("right hand socket"));
+		characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	}
+}
+
+void AEchoCharacter::FinishingEquipping()
+{
+	ActionState = EActionState::EAS_Unoccupied;
 }
 
 // Called every frame
