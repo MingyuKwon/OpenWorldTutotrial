@@ -9,6 +9,7 @@
 /**
  * 
  */
+
 UCLASS()
 class OPENWORLDTUTORIAL_API AWeapon : public ATestItem
 {
@@ -24,4 +25,7 @@ protected:
 	
 	virtual void ComponentOverlapEndCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 
+private:
+	UPROPERTY(EditAnywhere, Category = "Weapon Category")
+	USoundBase* EquipSound;
 };

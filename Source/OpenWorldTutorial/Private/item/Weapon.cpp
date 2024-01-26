@@ -3,11 +3,23 @@
 
 #include "item/Weapon.h"
 #include "EchoCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/SphereComponent.h"
 
 void AWeapon::Equip(ACharacter* InParent, FName InSocketName)
 {
 	AttachActortoSocket(InParent, InSocketName);
 	ItemState = EItemState::EIS_Equipped;
+	if (EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), EquipSound, GetActorLocation());
+
+	}
+
+	if (sphereComp)
+	{
+		sphereComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void AWeapon::AttachActortoSocket(ACharacter* InParent, const FName& InSocketName)
