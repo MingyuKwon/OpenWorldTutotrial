@@ -64,14 +64,5 @@ void ATestItem::Tick(float DeltaTime)
 		FVector MovingVector = FVector(0.f, 0.f, SinValue) * 100 * DeltaTime;
 		AddActorWorldOffset(MovingVector);
 	}
-	else
-	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(2, 10.f, FColor::Yellow, GetOwner()->GetName());
-		}
-	}
-	
-
 }
 
