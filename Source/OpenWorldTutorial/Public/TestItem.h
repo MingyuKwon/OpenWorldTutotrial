@@ -8,6 +8,13 @@
 
 class USphereComponent;
 
+UENUM()
+enum class EItemState : uint8
+{
+	EIS_Hovering,
+	EIS_Equipped
+};
+
 UCLASS()
 class OPENWORLDTUTORIAL_API ATestItem : public AActor
 {
@@ -33,6 +40,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* meshComp;
+
+	EItemState ItemState = EItemState::EIS_Hovering;
 
 private:
 	template<typename T>

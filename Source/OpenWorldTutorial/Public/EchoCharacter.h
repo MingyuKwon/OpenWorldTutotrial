@@ -10,6 +10,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class ATestItem;
+class UAnimMontage;
 
 
 UCLASS()
@@ -34,6 +35,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// callback to input
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void Turn(float value);
@@ -42,9 +44,21 @@ protected:
 
 	virtual void Jump() override;
 	void EKeyPressed();
+	void Attack();
+
+	// playa montage function
+	void PlayAttackMontage();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+
+	bool CanAttack();
 
 private:
 	ECharacterState characterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 100.f;
@@ -57,5 +71,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	ATestItem* nearItem;
+
+	// Animation montages
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* attackMontage;
 
 };

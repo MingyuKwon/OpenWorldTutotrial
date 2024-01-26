@@ -58,10 +58,10 @@ void ATestItem::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	runningTime += DeltaTime;
 
-	if (!GetOwner())
+	if (ItemState == EItemState::EIS_Hovering)
 	{
 		float SinValue = FMathf::Sin(runningTime) / 3;
-		FVector MovingVector = FVector(0.f, 0.f, SinValue) * 50 * DeltaTime;
+		FVector MovingVector = FVector(0.f, 0.f, SinValue) * 100 * DeltaTime;
 		AddActorWorldOffset(MovingVector);
 	}
 	else

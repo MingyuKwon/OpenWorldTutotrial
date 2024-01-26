@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TestItem.h"
 #include "item/Weapon.h"
+#include "Animation/AnimMontage.h"
 
 
 // Sets default values
@@ -40,6 +41,7 @@ void AEchoCharacter::BeginPlay()
 
 void AEchoCharacter::MoveForward(float value)
 {
+	if (ActionState == EActionState::EAS_Attacking) return;
 	if (Controller && value != 0)
 	{
 		const FRotator ControlRotaion = GetControlRotation();
@@ -52,6 +54,7 @@ void AEchoCharacter::MoveForward(float value)
 
 void AEchoCharacter::MoveRight(float value)
 {
+	if (ActionState == EActionState::EAS_Attacking) return;
 	if (Controller && value != 0)
 	{
 		const FRotator ControlRotaion = GetControlRotation();
@@ -98,6 +101,51 @@ void AEchoCharacter::EKeyPressed()
 	}
 }
 
+void AEchoCharacter::Attack()
+{
+	if (CanAttack())
+	{
+		PlayAttackMontage();
+		ActionState = EActionState::EAS_Attacking;
+	}
+
+	
+}
+
+void AEchoCharacter::PlayAttackMontage()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && attackMontage)
+	{
+		AnimInstance->Montage_Play(attackMontage);
+		const int32 Selection = FMath::RandRange(0, 1);
+		FName SectionName = FName();
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		default:
+			break;
+		}
+
+		AnimInstance->Montage_JumpToSection(SectionName, attackMontage);
+	}
+}
+
+void AEchoCharacter::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+bool AEchoCharacter::CanAttack()
+{
+	return ActionState == EActionState::EAS_Unoccupied && characterState != ECharacterState::ECS_Unequipped;
+}
+
 // Called every frame
 void AEchoCharacter::Tick(float DeltaTime)
 {
@@ -116,5 +164,7 @@ void AEchoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction(TEXT("Jump"),EInputEvent::IE_Pressed , this, &AEchoCharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Equip"), EInputEvent::IE_Pressed, this, &AEchoCharacter::EKeyPressed);
+	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AEchoCharacter::Attack);
+
 }
 
