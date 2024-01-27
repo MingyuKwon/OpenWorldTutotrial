@@ -6,6 +6,7 @@
 #include "OpenWorldTutorial/DrawDebugMacro.h"
 #include "Animation/AnimMontage.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -27,6 +28,7 @@ void AEnemy::GetHit(const FVector& HitPoint)
 	DRAW_SPHERE(HitPoint);
 	
 	HitReact(HitPoint);
+	
 }
 
 void AEnemy::HitReact(const FVector& HitPoint)
@@ -67,6 +69,12 @@ void AEnemy::HitReact(const FVector& HitPoint)
 	}
 
 	PlayHitReactMontage(Section);
+
+	if (fleshSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fleshSound, HitPoint);
+	}
+	
 }
 
 // Called when the game starts or when spawned
