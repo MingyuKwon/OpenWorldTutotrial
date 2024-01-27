@@ -3,6 +3,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Components/CapsuleComponent.h"
+#include "OpenWorldTutorial/DrawDebugMacro.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -16,6 +17,11 @@ AEnemy::AEnemy()
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	GetMesh()->SetGenerateOverlapEvents(true);
+}
+
+void AEnemy::GetHit(const FVector& HitPoint)
+{
+	DRAW_SPHERE(HitPoint);
 }
 
 // Called when the game starts or when spawned

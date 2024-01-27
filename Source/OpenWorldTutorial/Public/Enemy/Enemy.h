@@ -4,16 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "HitInterface.h"
 #include "Enemy.generated.h"
 
 UCLASS()
-class OPENWORLDTUTORIAL_API AEnemy : public ACharacter
+class OPENWORLDTUTORIAL_API AEnemy : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	AEnemy();
+
+	virtual void GetHit(const FVector& HitPoint) override;
 
 protected:
 	// Called when the game starts or when spawned
