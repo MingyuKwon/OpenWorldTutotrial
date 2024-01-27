@@ -27,6 +27,8 @@ public:
 
 	virtual void GetHit(const FVector& HitPoint) override;
 
+	void HitReact(const FVector& HitPoint);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

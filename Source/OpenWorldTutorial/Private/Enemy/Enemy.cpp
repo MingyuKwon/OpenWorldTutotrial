@@ -25,21 +25,48 @@ AEnemy::AEnemy()
 void AEnemy::GetHit(const FVector& HitPoint)
 {
 	DRAW_SPHERE(HitPoint);
-	PlayHitReactMontage(FName("Left"));
+	
+	HitReact(HitPoint);
+}
 
+void AEnemy::HitReact(const FVector& HitPoint)
+{
 	const FVector Forward = GetActorForwardVector();
-	const FVector ImpactLowered = FVector(Forward.X, Forward.Y, GetActorLocation().Z);
 	const FVector ToHit = (HitPoint - GetActorLocation()).GetSafeNormal();
 
-	const double CosTheta =  FVector::DotProduct(ImpactLowered, ToHit);
+	const double CosTheta = FVector::DotProduct(Forward, ToHit);
 	double Theta = FMath::Acos(CosTheta);
 	Theta = FMath::RadiansToDegrees(Theta);
 
-	const FVector CrossProduct =  FVector::CrossProduct(Forward, ToHit);
+	const FVector CrossProduct = FVector::CrossProduct(Forward, ToHit);
 	if (CrossProduct.Z < 0)
 	{
 		Theta *= -1;
 	}
+
+	FName Section("Back");
+
+	if (Theta >= -45.f && Theta <= 45.f)
+	{
+		Section = FName("Forward");
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, FString::Printf(TEXT("Forward - Theta: %f"), Theta));
+	}
+	else if (Theta >= -135.f && Theta < -45.f)
+	{
+		Section = FName("Left");
+		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Black, FString::Printf(TEXT("Left - Theta: %f"), Theta));
+	}
+	else if (Theta <= 135.f && Theta > 45.f)
+	{
+		Section = FName("Right");
+		GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Blue, FString::Printf(TEXT("Right - Theta: %f"), Theta));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Yellow, FString::Printf(TEXT("Back - Theta: %f"), Theta));
+	}
+
+	PlayHitReactMontage(Section);
 }
 
 // Called when the game starts or when spawned
