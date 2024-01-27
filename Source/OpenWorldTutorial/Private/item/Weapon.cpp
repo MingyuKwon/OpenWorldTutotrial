@@ -51,6 +51,7 @@ void AWeapon::EnableWeaponAttackCollision(bool isTrue)
 {
 	if (!WeaponBox) return;
 
+	IgnoreActors.Empty();
 	if (isTrue)
 	{
 		WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -59,6 +60,8 @@ void AWeapon::EnableWeaponAttackCollision(bool isTrue)
 	{
 		WeaponBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+
+	
 }
 
 void AWeapon::BeginPlay()
@@ -92,6 +95,10 @@ void AWeapon::BoxOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, 
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);
+	for (AActor* actor : IgnoreActors)
+	{
+		ActorsToIgnore.AddUnique(actor);
+	}
 
 	FHitResult hitResult;
 	UKismetSystemLibrary::BoxTraceSingle(
@@ -115,7 +122,7 @@ void AWeapon::BoxOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, 
 		{
 			hitInterface->GetHit(hitResult.ImpactPoint);
 		}
-
+		IgnoreActors.AddUnique(hitResult.GetActor());
 	}
 
 }

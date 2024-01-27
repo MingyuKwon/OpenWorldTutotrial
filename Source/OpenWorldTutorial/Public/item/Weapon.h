@@ -47,4 +47,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* BoxTraceEnd;
+
+	TArray<AActor*> IgnoreActors;
 };
