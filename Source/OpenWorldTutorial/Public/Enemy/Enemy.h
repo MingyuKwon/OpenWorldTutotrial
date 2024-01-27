@@ -47,4 +47,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* fleshSound;
 
+	UPROPERTY(EditAnywhere, Category = "VFX")
+	UParticleSystem* HitParticles;
+
 };

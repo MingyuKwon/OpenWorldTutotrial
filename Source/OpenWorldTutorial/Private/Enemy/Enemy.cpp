@@ -25,10 +25,19 @@ AEnemy::AEnemy()
 
 void AEnemy::GetHit(const FVector& HitPoint)
 {
-	DRAW_SPHERE(HitPoint);
+	//DRAW_SPHERE(HitPoint);
 	
 	HitReact(HitPoint);
-	
+
+	if (fleshSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fleshSound, HitPoint);
+	}
+
+	if (HitParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, HitPoint);
+	}
 }
 
 void AEnemy::HitReact(const FVector& HitPoint)
@@ -69,12 +78,6 @@ void AEnemy::HitReact(const FVector& HitPoint)
 	}
 
 	PlayHitReactMontage(Section);
-
-	if (fleshSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fleshSound, HitPoint);
-	}
-	
 }
 
 // Called when the game starts or when spawned
