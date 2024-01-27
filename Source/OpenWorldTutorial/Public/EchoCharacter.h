@@ -68,6 +68,10 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void FinishingEquipping();
 
+	UFUNCTION(BlueprintCallable)
+	void EnableObtainWeaponAttackCollision(bool isTrue);
+
+
 private:
 	ECharacterState characterState = ECharacterState::ECS_Unequipped;
 

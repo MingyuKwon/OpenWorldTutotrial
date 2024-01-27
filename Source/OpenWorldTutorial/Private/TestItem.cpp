@@ -26,14 +26,14 @@ ATestItem::ATestItem()
 void ATestItem::BeginPlay()
 {
 	Super::BeginPlay();	
-	sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ATestItem::ComponentOverlapBeginCallback);
-	sphereComp->OnComponentEndOverlap.AddDynamic(this, &ATestItem::ComponentOverlapEndCallback);
+	sphereComp->OnComponentBeginOverlap.AddDynamic(this, &ATestItem::SphereOverlapBeginCallback);
+	sphereComp->OnComponentEndOverlap.AddDynamic(this, &ATestItem::SphereOverlapEndCallback);
 	runningTime = 0;
 }
 
 
 
-void ATestItem::ComponentOverlapBeginCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ATestItem::SphereOverlapBeginCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	AEchoCharacter* character = Cast<AEchoCharacter>(OtherActor);
 	if (character)
@@ -43,7 +43,7 @@ void ATestItem::ComponentOverlapBeginCallback( UPrimitiveComponent* OverlappedCo
 	
 }
 
-void ATestItem::ComponentOverlapEndCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ATestItem::SphereOverlapEndCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	AEchoCharacter* character = Cast<AEchoCharacter>(OtherActor);
 	if (character)

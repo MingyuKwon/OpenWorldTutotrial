@@ -213,6 +213,14 @@ void AEchoCharacter::FinishingEquipping()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
+void AEchoCharacter::EnableObtainWeaponAttackCollision(bool isTrue)
+{
+	if (obtainWeapon)
+	{
+		obtainWeapon->EnableWeaponAttackCollision(isTrue);
+	}
+}
+
 // Called every frame
 void AEchoCharacter::Tick(float DeltaTime)
 {
