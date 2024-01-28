@@ -5,6 +5,7 @@
 #include "OpenWorldTutorial/DrawDebugMacro.h"
 #include "Components/SphereComponent.h"
 #include "EchoCharacter.h"
+#include "NiagaraComponent.h"
 
 // Sets default values
 ATestItem::ATestItem()
@@ -18,7 +19,8 @@ ATestItem::ATestItem()
 	sphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
 	sphereComp->SetupAttachment(RootComponent);
 
-	
+	EmbersEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Ember"));
+	EmbersEffect->SetupAttachment(RootComponent);
 
 }
 

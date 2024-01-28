@@ -42,6 +42,10 @@ protected:
 	UStaticMeshComponent* meshComp;
 
 	EItemState ItemState = EItemState::EIS_Hovering;
+	
+	UPROPERTY(EditDefaultsOnly)
+	class UNiagaraComponent* EmbersEffect;
+
 
 private:
 	template<typename T>
