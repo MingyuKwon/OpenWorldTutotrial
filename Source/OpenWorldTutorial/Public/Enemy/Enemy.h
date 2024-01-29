@@ -9,6 +9,7 @@
 
 class UAnimMontage;
 class UAttributeComponent;
+class UWidgetComponent;
 
 UCLASS()
 class OPENWORLDTUTORIAL_API AEnemy : public ACharacter, public IHitInterface
@@ -43,6 +44,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* attribute;
+
+	UPROPERTY(VisibleAnywhere)
+	UWidgetComponent* HealthBarWidget;
 
 	// Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")

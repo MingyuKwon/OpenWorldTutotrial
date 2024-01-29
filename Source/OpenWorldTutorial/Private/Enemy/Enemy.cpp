@@ -8,6 +8,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Component/AttributeComponent.h"
+#include "Components/WidgetComponent.h"
 
 
 // Sets default values
@@ -24,6 +25,9 @@ AEnemy::AEnemy()
 	GetMesh()->SetGenerateOverlapEvents(true);
 
 	attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+
+	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Health bar"));
+	HealthBarWidget->SetupAttachment(RootComponent);
 }
 
 void AEnemy::GetHit(const FVector& HitPoint)
