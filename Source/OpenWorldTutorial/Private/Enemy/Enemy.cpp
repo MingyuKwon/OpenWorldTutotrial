@@ -7,6 +7,7 @@
 #include "Animation/AnimMontage.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Component/AttributeComponent.h"
 
 
 // Sets default values
@@ -21,6 +22,8 @@ AEnemy::AEnemy()
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	GetMesh()->SetGenerateOverlapEvents(true);
+
+	attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 }
 
 void AEnemy::GetHit(const FVector& HitPoint)

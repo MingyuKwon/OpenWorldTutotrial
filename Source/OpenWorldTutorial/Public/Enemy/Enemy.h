@@ -8,7 +8,7 @@
 #include "Enemy.generated.h"
 
 class UAnimMontage;
-
+class UAttributeComponent;
 
 UCLASS()
 class OPENWORLDTUTORIAL_API AEnemy : public ACharacter, public IHitInterface
@@ -40,6 +40,10 @@ protected:
 	
 
 private:
+
+	UPROPERTY(VisibleAnywhere)
+	UAttributeComponent* attribute;
+
 	// Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* HitReactMontage;
