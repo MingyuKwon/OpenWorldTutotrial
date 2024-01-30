@@ -48,11 +48,15 @@ void AEnemy::GetHit(const FVector& HitPoint)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, HitPoint);
 		}
+
+		HealthBarWidget->SetVisibility(true);
 	}
 	else
 	{
 		Die();
 	}
+
+	
 
 	
 }
@@ -105,6 +109,7 @@ void AEnemy::BeginPlay()
 	if (HealthBarWidget)
 	{
 		HealthBarWidget->SetHealthPercent(1.f);
+		HealthBarWidget->SetVisibility(false);
 	}
 }
 
@@ -136,6 +141,11 @@ void AEnemy::Die()
 		animInstance->Montage_JumpToSection(SectinoName, DeathMontage);
 
 	}
+
+	CombatTarget = nullptr;
+	HealthBarWidget->SetVisibility(false);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetLifeSpan(5.f);
 }
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -146,6 +156,8 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 		HealthBarWidget->SetHealthPercent(attribute->GetHealthPercent());
 	}
 
+	CombatTarget = EventInstigator->GetPawn();
+
 	return DamageAmount;
 }
 
@@ -153,6 +165,15 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (CombatTarget)
+	{
+		const double Distance = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();
+		if (CombatRadius < Distance)
+		{
+			HealthBarWidget->SetVisibility(false);
+		}
+	}
 
 }
 

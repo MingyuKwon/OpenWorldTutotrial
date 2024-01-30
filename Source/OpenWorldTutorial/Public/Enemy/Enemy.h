@@ -73,6 +73,12 @@ private:
 	UPROPERTY(EditAnywhere, Category = "VFX")
 	UParticleSystem* HitParticles;
 
+	UPROPERTY();
+	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere);
+	double CombatRadius = 500.f;
+
 	
 
 };
