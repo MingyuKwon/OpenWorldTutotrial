@@ -11,6 +11,11 @@
 #include "Components/WidgetComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AIController.h"
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
+#include "Navigation/PathFollowingComponent.h"
+
 
 
 // Sets default values
@@ -116,6 +121,25 @@ void AEnemy::BeginPlay()
 	{
 		HealthBarWidget->SetHealthPercent(1.f);
 		HealthBarWidget->SetVisibility(false);
+	}
+
+	AIController = Cast<AAIController>(GetController());
+	if (AIController && PatrolTarget)
+	{
+		FAIMoveRequest moveRequest;
+		moveRequest.SetGoalActor(PatrolTarget);
+		moveRequest.SetAcceptanceRadius(15.f);
+		FNavPathSharedPtr NavPath;
+		AIController->MoveTo(moveRequest, &NavPath);
+		TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
+		for (auto& point : PathPoints)
+		{
+			UE_LOG(LogTemp, Display, TEXT("points"));
+			const FVector& Location = point.Location;
+			DrawDebugSphere(GetWorld(), Location, 10.f, 20, FColor::Red,true, 5.f);
+		}
+		
+
 	}
 }
 

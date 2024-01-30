@@ -79,6 +79,13 @@ private:
 	UPROPERTY(EditAnywhere);
 	double CombatRadius = 500.f;
 
+
+	// Navigarion
+	UPROPERTY(EditAnywhere, Category = "Ai Navigation")
+	AActor* PatrolTarget;
+
+	UPROPERTY();
+	class AAIController* AIController;
 	
 
 };
