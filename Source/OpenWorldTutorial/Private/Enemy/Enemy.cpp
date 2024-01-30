@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Component/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
+#include "HUD/HealthBarComponent.h"
 
 
 // Sets default values
@@ -26,7 +27,7 @@ AEnemy::AEnemy()
 
 	attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 
-	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Health bar"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("Health bar"));
 	HealthBarWidget->SetupAttachment(RootComponent);
 }
 
@@ -92,6 +93,10 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetHealthPercent(1.f);
+	}
 }
 
 void AEnemy::PlayHitReactMontage(const FName SectionName)
@@ -104,6 +109,17 @@ void AEnemy::PlayHitReactMontage(const FName SectionName)
 		animInstance->Montage_JumpToSection(SectionName, HitReactMontage);
 
 	}
+}
+
+float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	if (attribute && HealthBarWidget)
+	{
+		attribute->ReceiveDamage(DamageAmount);
+		HealthBarWidget->SetHealthPercent(attribute->GetHealthPercent());
+	}
+
+	return DamageAmount;
 }
 
 // Called every frame

@@ -49,4 +49,8 @@ private:
 	USceneComponent* BoxTraceEnd;
 
 	TArray<AActor*> IgnoreActors;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	float Damage = 10.f;
 };

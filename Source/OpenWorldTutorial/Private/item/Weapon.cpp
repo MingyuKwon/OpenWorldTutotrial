@@ -130,6 +130,14 @@ void AWeapon::BoxOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, 
 			hitInterface->GetHit(hitResult.ImpactPoint);
 		}
 		IgnoreActors.AddUnique(hitResult.GetActor());
+
+		UGameplayStatics::ApplyDamage(
+			hitResult.GetActor(),
+			Damage,
+			GetInstigator()->GetController(),
+			this,
+			UDamageType::StaticClass()
+			);
 	}
 
 }

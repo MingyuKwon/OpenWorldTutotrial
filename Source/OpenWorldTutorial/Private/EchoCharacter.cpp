@@ -97,6 +97,8 @@ void AEchoCharacter::EKeyPressed()
 	if (weapon)
 	{
 		weapon->Equip(this, TEXT("right hand socket"));
+		weapon->SetOwner(this);
+		weapon->SetInstigator(this);
 		characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 		nearItem = nullptr;
 		obtainWeapon = weapon;

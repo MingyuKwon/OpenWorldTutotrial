@@ -9,7 +9,7 @@
 
 class UAnimMontage;
 class UAttributeComponent;
-class UWidgetComponent;
+class UHealthBarComponent;
 
 UCLASS()
 class OPENWORLDTUTORIAL_API AEnemy : public ACharacter, public IHitInterface
@@ -34,10 +34,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-
 	// montage blueprint function
 	UFUNCTION(BlueprintCallable)
 	void PlayHitReactMontage(const FName SectionName);
+
+	virtual float TakeDamage(
+		float DamageAmount,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		AActor* DamageCauser
+	) override;
 	
 
 private:
@@ -46,7 +52,7 @@ private:
 	UAttributeComponent* attribute;
 
 	UPROPERTY(VisibleAnywhere)
-	UWidgetComponent* HealthBarWidget;
+	UHealthBarComponent* HealthBarWidget;
 
 	// Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
