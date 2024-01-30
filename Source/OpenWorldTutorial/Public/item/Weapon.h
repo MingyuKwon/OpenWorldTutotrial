@@ -52,5 +52,5 @@ private:
 
 
 	UPROPERTY(EditDefaultsOnly)
-	float Damage = 10.f;
+	float Damage = 30.f;
 };

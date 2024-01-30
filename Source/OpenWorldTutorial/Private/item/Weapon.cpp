@@ -124,20 +124,20 @@ void AWeapon::BoxOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, 
 
 	if (hitResult.GetActor())
 	{
-		IHitInterface* hitInterface = Cast<IHitInterface>(hitResult.GetActor());
-		if (hitInterface)
-		{
-			hitInterface->GetHit(hitResult.ImpactPoint);
-		}
-		IgnoreActors.AddUnique(hitResult.GetActor());
-
 		UGameplayStatics::ApplyDamage(
 			hitResult.GetActor(),
 			Damage,
 			GetInstigator()->GetController(),
 			this,
 			UDamageType::StaticClass()
-			);
+		);
+
+		IHitInterface* hitInterface = Cast<IHitInterface>(hitResult.GetActor());
+		if (hitInterface)
+		{
+			hitInterface->GetHit(hitResult.ImpactPoint);
+		}
+		IgnoreActors.AddUnique(hitResult.GetActor());
 	}
 
 }

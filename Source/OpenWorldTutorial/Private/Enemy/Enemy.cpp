@@ -35,17 +35,26 @@ void AEnemy::GetHit(const FVector& HitPoint)
 {
 	//DRAW_SPHERE(HitPoint);
 	
-	HitReact(HitPoint);
-
-	if (fleshSound)
+	if (attribute && attribute->IsAlive())
 	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fleshSound, HitPoint);
+		HitReact(HitPoint);
+
+		if (fleshSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), fleshSound, HitPoint);
+		}
+
+		if (HitParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, HitPoint);
+		}
+	}
+	else
+	{
+		Die();
 	}
 
-	if (HitParticles)
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, HitPoint);
-	}
+	
 }
 
 void AEnemy::HitReact(const FVector& HitPoint)
@@ -107,6 +116,24 @@ void AEnemy::PlayHitReactMontage(const FName SectionName)
 	{
 		animInstance->Montage_Play(HitReactMontage);
 		animInstance->Montage_JumpToSection(SectionName, HitReactMontage);
+
+	}
+}
+
+void AEnemy::Die()
+{
+	// Play Death montage
+	UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
+
+	if (DeathMontage && animInstance)
+	{
+		animInstance->Montage_Play(DeathMontage);
+
+		TArray<FName> dieSecionNames = { FName("Death1"), FName("Death2"), FName("Death3")};
+		int8 randIndex = FMath::RandRange(0, 2);
+		deathPose = static_cast<EDeathPose>(randIndex + 1);
+		FName SectinoName = dieSecionNames[randIndex];
+		animInstance->Montage_JumpToSection(SectinoName, DeathMontage);
 
 	}
 }

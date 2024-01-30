@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "HitInterface.h"
+#include "CharacterType.h"
 #include "Enemy.generated.h"
 
 class UAnimMontage;
@@ -38,12 +39,17 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PlayHitReactMontage(const FName SectionName);
 
+	void Die();
+
 	virtual float TakeDamage(
 		float DamageAmount,
 		struct FDamageEvent const& DamageEvent,
 		class AController* EventInstigator,
 		AActor* DamageCauser
 	) override;
+
+	UPROPERTY(BlueprintReadOnly)
+	EDeathPose deathPose = EDeathPose::EDP_Alive;
 	
 
 private:
@@ -58,10 +64,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* HitReactMontage;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* DeathMontage;
+
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* fleshSound;
 
 	UPROPERTY(EditAnywhere, Category = "VFX")
 	UParticleSystem* HitParticles;
+
+	
 
 };
