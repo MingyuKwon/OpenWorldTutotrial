@@ -10,6 +10,7 @@
 #include "Component/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "HUD/HealthBarComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -29,6 +30,11 @@ AEnemy::AEnemy()
 
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("Health bar"));
 	HealthBarWidget->SetupAttachment(RootComponent);
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 }
 
 void AEnemy::GetHit(const FVector& HitPoint)
