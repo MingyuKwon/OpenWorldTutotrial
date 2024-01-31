@@ -11,6 +11,7 @@
 class UAnimMontage;
 class UAttributeComponent;
 class UHealthBarComponent;
+class UPawnSensingComponent;
 
 UCLASS()
 class OPENWORLDTUTORIAL_API AEnemy : public ACharacter, public IHitInterface
@@ -23,6 +24,10 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void CheckPatrolTarget();
+
+	void CheckCombatTarget();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -45,6 +50,9 @@ protected:
 
 	void Die();
 
+	UFUNCTION()
+	void PawnSeen(APawn* seenPawn);
+
 	virtual float TakeDamage(
 		float DamageAmount,
 		struct FDamageEvent const& DamageEvent,
@@ -60,11 +68,16 @@ protected:
 
 private:
 
+	//components
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* attribute;
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* PawnSensingComponent;
+
 
 	// Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")

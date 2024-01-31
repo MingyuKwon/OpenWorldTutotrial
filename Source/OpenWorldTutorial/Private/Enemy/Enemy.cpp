@@ -15,7 +15,7 @@
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 #include "Navigation/PathFollowingComponent.h"
-
+#include "Perception/PawnSensingComponent.h"
 
 
 // Sets default values
@@ -35,6 +35,10 @@ AEnemy::AEnemy()
 
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("Health bar"));
 	HealthBarWidget->SetupAttachment(RootComponent);
+
+	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
+	PawnSensingComponent->SightRadius = 4000.f;
+	PawnSensingComponent->SetPeripheralVisionAngle(45.f);
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationPitch = false;
@@ -122,6 +126,11 @@ void AEnemy::BeginPlay()
 
 	AIController = Cast<AAIController>(GetController());
 	MoveToTarget(PatrolTarget);
+	
+	if (PawnSensingComponent)
+	{
+		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
+	}
 }
 
 void AEnemy::MoveToTarget(AActor* Target)
@@ -167,6 +176,11 @@ void AEnemy::Die()
 	HealthBarWidget->SetVisibility(false);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetLifeSpan(5.f);
+}
+
+void AEnemy::PawnSeen(APawn* seenPawn)
+{
+	UE_LOG(LogTemp, Display, TEXT("%s"), *seenPawn->GetName());
 }
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
