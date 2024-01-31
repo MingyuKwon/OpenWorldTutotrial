@@ -188,16 +188,17 @@ void AEnemy::PawnSeen(APawn* seenPawn)
 	if (EnemyState == EEnemyState::EES_Chasing) return;
 	if (seenPawn && seenPawn->ActorHasTag(FName("Player")))
 	{
-		EnemyState = EEnemyState::EES_Chasing;
 		GetWorldTimerManager().ClearTimer(PatrolTimer);
-
 		GetCharacterMovement()->MaxWalkSpeed = 300.f;
 		CombatTarget = seenPawn;
-		MoveToTarget(CombatTarget);
-		
+
+		if (EnemyState != EEnemyState::EES_Attacking)
+		{
+			EnemyState = EEnemyState::EES_Chasing;
+			MoveToTarget(CombatTarget);
+		}
 		
 	}
-	
 	
 }
 
@@ -280,7 +281,23 @@ void AEnemy::CheckCombatTarget()
 	{
 		CombatTarget = nullptr;
 		HealthBarWidget->SetVisibility(false);
+
+		EnemyState = EEnemyState::EES_Patrolling;
+		GetCharacterMovement()->MaxWalkSpeed = 125.f;
+		MoveToTarget(PatrolTarget);
 	}
+	else if (!InTargetInRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Chasing)
+	{
+		EnemyState = EEnemyState::EES_Chasing;
+		GetCharacterMovement()->MaxWalkSpeed = 300.f;
+		MoveToTarget(CombatTarget);
+	}
+	else if (InTargetInRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)
+	{
+		EnemyState = EEnemyState::EES_Attacking;
+	}
+
+	
 }
 
 // Called to bind functionality to input
