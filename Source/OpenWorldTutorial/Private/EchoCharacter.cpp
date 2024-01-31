@@ -37,6 +37,7 @@ void AEchoCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Tags.Add(FName("Player"));
 }
 
 void AEchoCharacter::MoveForward(float value)

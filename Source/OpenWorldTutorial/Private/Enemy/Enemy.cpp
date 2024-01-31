@@ -161,6 +161,8 @@ void AEnemy::Die()
 	// Play Death montage
 	UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
 
+	UE_LOG(LogTemp, Display, TEXT("Die"));
+
 	if (DeathMontage && animInstance)
 	{
 		animInstance->Montage_Play(DeathMontage);
@@ -180,7 +182,23 @@ void AEnemy::Die()
 
 void AEnemy::PawnSeen(APawn* seenPawn)
 {
-	UE_LOG(LogTemp, Display, TEXT("%s"), *seenPawn->GetName());
+	UE_LOG(LogTemp, Display, TEXT("Detect Player"));
+
+	
+	if (EnemyState == EEnemyState::EES_Chasing) return;
+	if (seenPawn && seenPawn->ActorHasTag(FName("Player")))
+	{
+		EnemyState = EEnemyState::EES_Chasing;
+		GetWorldTimerManager().ClearTimer(PatrolTimer);
+
+		GetCharacterMovement()->MaxWalkSpeed = 300.f;
+		CombatTarget = seenPawn;
+		MoveToTarget(CombatTarget);
+		
+		
+	}
+	
+	
 }
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -235,8 +253,16 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	CheckCombatTarget();
-	CheckPatrolTarget();
+	if (EnemyState > EEnemyState::EES_Patrolling)
+	{
+		CheckCombatTarget();
+	}
+	else
+	{
+		CheckPatrolTarget();
+	}
+	
+	
 }
 
 void AEnemy::CheckPatrolTarget()

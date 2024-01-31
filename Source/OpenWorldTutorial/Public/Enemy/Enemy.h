@@ -36,6 +36,8 @@ public:
 
 	void HitReact(const FVector& HitPoint);
 
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
