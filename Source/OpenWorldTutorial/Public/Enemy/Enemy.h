@@ -3,18 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "HitInterface.h"
+#include "BaseCharacter.h"
 #include "CharacterType.h"
 #include "Enemy.generated.h"
 
-class UAnimMontage;
-class UAttributeComponent;
 class UHealthBarComponent;
 class UPawnSensingComponent;
 
 UCLASS()
-class OPENWORLDTUTORIAL_API AEnemy : public ACharacter, public IHitInterface
+class OPENWORLDTUTORIAL_API AEnemy : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -34,8 +31,6 @@ public:
 
 	virtual void GetHit(const FVector& HitPoint) override;
 
-	void HitReact(const FVector& HitPoint);
-
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 protected:
@@ -46,11 +41,7 @@ protected:
 
 	AActor* ChoosePatrolTarget();
 
-	// montage blueprint function
-	UFUNCTION(BlueprintCallable)
-	void PlayHitReactMontage(const FName SectionName);
-
-	void Die();
+	virtual void Die() override;
 
 	UFUNCTION()
 	void PawnSeen(APawn* seenPawn);
@@ -70,29 +61,11 @@ protected:
 
 private:
 
-	//components
-	UPROPERTY(VisibleAnywhere)
-	UAttributeComponent* attribute;
-
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;
 
 	UPROPERTY(VisibleAnywhere)
 	UPawnSensingComponent* PawnSensingComponent;
-
-
-	// Animation montages
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* HitReactMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* DeathMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Sound")
-	USoundBase* fleshSound;
-
-	UPROPERTY(EditAnywhere, Category = "VFX")
-	UParticleSystem* HitParticles;
 
 	UPROPERTY();
 	AActor* CombatTarget;

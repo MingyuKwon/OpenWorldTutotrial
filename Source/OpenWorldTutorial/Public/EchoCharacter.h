@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "CharacterType.h"
 #include "EchoCharacter.generated.h"
 
@@ -11,11 +11,10 @@ class USpringArmComponent;
 class UCameraComponent;
 class ATestItem;
 class UAnimMontage;
-class AWeapon;
 
 
 UCLASS()
-class OPENWORLDTUTORIAL_API AEchoCharacter : public ACharacter
+class OPENWORLDTUTORIAL_API AEchoCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -45,14 +44,15 @@ protected:
 
 	virtual void Jump() override;
 	void EKeyPressed();
-	void Attack();
+
+	virtual void Attack() override;
 
 	// playa montage function
-	void PlayAttackMontage();
+	virtual void PlayAttackMontage() override;
 
-	UFUNCTION(BlueprintCallable)
-	void AttackEnd();
-	bool CanAttack();
+	virtual void AttackEnd() override;
+
+	virtual bool CanAttack() override;
 
 	void PlayEquipMontage(FName SectionName);
 	bool CanDisarm();
@@ -67,9 +67,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void FinishingEquipping();
-
-	UFUNCTION(BlueprintCallable)
-	void EnableObtainWeaponAttackCollision(bool isTrue);
 
 
 private:
@@ -89,13 +86,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	ATestItem* nearItem;
-
-	UPROPERTY(VisibleAnywhere, Category = "Weapon")
-	AWeapon* obtainWeapon;
-
-	// Animation montages
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* attackMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* equipMontage;
