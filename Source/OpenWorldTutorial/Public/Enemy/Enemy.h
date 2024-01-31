@@ -35,6 +35,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void MoveToTarget(AActor* Target);
+
+	AActor* ChoosePatrolTarget();
+
 	// montage blueprint function
 	UFUNCTION(BlueprintCallable)
 	void PlayHitReactMontage(const FName SectionName);
@@ -83,6 +87,9 @@ private:
 
 	UPROPERTY(EditAnywhere);
 	double PatrolRadius = 200.f;
+
+	FTimerHandle PatrolTimer;
+	void PatrolTimerFinished();
 
 	// Navigarion
 	UPROPERTY(EditAnywhere, Category = "Ai Navigation")
