@@ -182,9 +182,6 @@ void AEnemy::Die()
 
 void AEnemy::PawnSeen(APawn* seenPawn)
 {
-	UE_LOG(LogTemp, Display, TEXT("Detect Player"));
-
-	
 	if (EnemyState == EEnemyState::EES_Chasing) return;
 	if (seenPawn && seenPawn->ActorHasTag(FName("Player")))
 	{
@@ -215,9 +212,8 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	{
 		EnemyState = EEnemyState::EES_Chasing;
 		GetCharacterMovement()->MaxWalkSpeed = 300.f;
+		MoveToTarget(CombatTarget);
 	}
-	
-	MoveToTarget(CombatTarget);
 
 	return DamageAmount;
 }
@@ -292,16 +288,19 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Patrolling;
 		GetCharacterMovement()->MaxWalkSpeed = 125.f;
 		MoveToTarget(PatrolTarget);
+		UE_LOG(LogTemp, Display, TEXT("Loose Interset"));
 	}
 	else if (!InTargetInRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Chasing)
 	{
 		EnemyState = EEnemyState::EES_Chasing;
 		GetCharacterMovement()->MaxWalkSpeed = 300.f;
 		MoveToTarget(CombatTarget);
+		UE_LOG(LogTemp, Display, TEXT("Chase"));
 	}
 	else if (InTargetInRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)
 	{
 		EnemyState = EEnemyState::EES_Attacking;
+		UE_LOG(LogTemp, Display, TEXT("Attack"));
 	}
 
 	
