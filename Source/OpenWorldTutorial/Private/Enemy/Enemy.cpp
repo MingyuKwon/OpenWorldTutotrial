@@ -16,6 +16,7 @@
 #include "NavigationPath.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Perception/PawnSensingComponent.h"
+#include "item/Weapon.h"
 
 
 // Sets default values
@@ -71,6 +72,14 @@ void AEnemy::GetHit(const FVector& HitPoint)
 
 }
 
+void AEnemy::Destroyed()
+{
+	if (obtainWeapon)
+	{
+		Destroy(obtainWeapon);
+	}
+}
+
 
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
@@ -89,6 +98,13 @@ void AEnemy::BeginPlay()
 	if (PawnSensingComponent)
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
+	}
+
+	if (GetWorld() && WeaponClass)
+	{
+		AWeapon* defaultWeapon = GetWorld()->SpawnActor<AWeapon>(WeaponClass);
+		defaultWeapon->Equip(this, FName("RightHandSocket"));
+		obtainWeapon = defaultWeapon;
 	}
 }
 

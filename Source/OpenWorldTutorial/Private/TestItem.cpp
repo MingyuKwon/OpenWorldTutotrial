@@ -14,6 +14,7 @@ ATestItem::ATestItem()
 	PrimaryActorTick.bCanEverTick = true;
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Comp"));
+	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = meshComp;
 
 	sphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));

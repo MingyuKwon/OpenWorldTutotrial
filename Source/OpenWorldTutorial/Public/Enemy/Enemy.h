@@ -33,6 +33,8 @@ public:
 
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
+	virtual void Destroyed() override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -69,6 +71,9 @@ private:
 
 	UPROPERTY();
 	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AWeapon> WeaponClass;
 
 	UPROPERTY(EditAnywhere);
 	double CombatRadius = 500.f;
