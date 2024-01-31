@@ -76,7 +76,7 @@ void AEnemy::Destroyed()
 {
 	if (obtainWeapon)
 	{
-		Destroy(obtainWeapon);
+		obtainWeapon->Destroy();
 	}
 }
 
@@ -114,7 +114,7 @@ void AEnemy::MoveToTarget(AActor* Target)
 
 	FAIMoveRequest moveRequest;
 	moveRequest.SetGoalActor(Target);
-	moveRequest.SetAcceptanceRadius(15.f);
+	moveRequest.SetAcceptanceRadius(60.f);
 	AIController->MoveTo(moveRequest);
 }
 
@@ -214,6 +214,38 @@ AActor* AEnemy::ChoosePatrolTarget()
 	return nullptr;
 }
 
+void AEnemy::Attack()
+{
+	Super::Attack();
+	PlayAttackMontage();
+}
+
+void AEnemy::PlayAttackMontage()
+{
+	Super::PlayAttackMontage();
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && attackMontage)
+	{
+		AnimInstance->Montage_Play(attackMontage);
+		const int32 Selection = FMath::RandRange(0, 1);
+		FName SectionName = FName();
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		default:
+			break;
+		}
+
+		AnimInstance->Montage_JumpToSection(SectionName, attackMontage);
+	}
+}
+
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
@@ -262,6 +294,8 @@ void AEnemy::CheckCombatTarget()
 	else if (InTargetInRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)
 	{
 		EnemyState = EEnemyState::EES_Attacking;
+		
+		Attack();
 		UE_LOG(LogTemp, Display, TEXT("Attack"));
 	}
 

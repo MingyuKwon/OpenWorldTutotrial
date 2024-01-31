@@ -43,6 +43,9 @@ protected:
 
 	AActor* ChoosePatrolTarget();
 
+	virtual void Attack() override;
+	virtual void PlayAttackMontage() override;
+
 	virtual void Die() override;
 
 	UFUNCTION()

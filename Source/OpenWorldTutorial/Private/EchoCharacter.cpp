@@ -123,6 +123,8 @@ void AEchoCharacter::EKeyPressed()
 
 void AEchoCharacter::Attack()
 {
+	Super::Attack();
+
 	if (CanAttack())
 	{
 		PlayAttackMontage();
@@ -134,6 +136,8 @@ void AEchoCharacter::Attack()
 
 void AEchoCharacter::PlayAttackMontage()
 {
+	Super::PlayAttackMontage();
+
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && attackMontage)
 	{
