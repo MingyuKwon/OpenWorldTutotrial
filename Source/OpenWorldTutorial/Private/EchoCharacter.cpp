@@ -25,6 +25,12 @@ AEchoCharacter::AEchoCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	GetMesh()->SetCollisionResponseToChannels(ECollisionResponse::ECR_Ignore);  
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECollisionResponse::ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECollisionResponse::ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
+
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Comp"));
 	springArmComp->SetupAttachment(RootComponent);
 	springArmComp->TargetArmLength = 200.f;
@@ -38,7 +44,7 @@ void AEchoCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Tags.Add(FName("Player"));
+	Tags.Add(FName("EngagableTarget"));
 }
 
 void AEchoCharacter::MoveForward(float value)
@@ -98,12 +104,7 @@ void AEchoCharacter::EKeyPressed()
 	AWeapon* weapon = Cast<AWeapon>(nearItem);
 	if (weapon)
 	{
-		weapon->Equip(this, TEXT("right hand socket"));
-		weapon->SetOwner(this);
-		weapon->SetInstigator(this);
-		characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-		nearItem = nullptr;
-		obtainWeapon = weapon;
+		EquipWeapon(weapon);
 	}
 	else
 	{
@@ -131,9 +132,7 @@ void AEchoCharacter::Attack()
 		PlayAttackMontage();
 		ActionState = EActionState::EAS_Attacking;
 	}
-	
 }
-
 
 void AEchoCharacter::PlayEquipMontage(FName SectionName)
 {
@@ -143,6 +142,16 @@ void AEchoCharacter::PlayEquipMontage(FName SectionName)
 		AnimInstance->Montage_Play(equipMontage);
 		AnimInstance->Montage_JumpToSection(SectionName, equipMontage);
 	}
+}
+
+void AEchoCharacter::EquipWeapon(AWeapon* weapon)
+{
+	weapon->Equip(this, TEXT("right hand socket"));
+	weapon->SetOwner(this);
+	weapon->SetInstigator(this);
+	characterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	nearItem = nullptr;
+	obtainWeapon = weapon;
 }
 
 void AEchoCharacter::AttackEnd()
@@ -156,8 +165,6 @@ bool AEchoCharacter::CanAttack()
 		&& characterState != ECharacterState::ECS_Unequipped;
 }
 
-
-
 bool AEchoCharacter::CanDisarm()
 {
 	return ActionState == EActionState::EAS_Unoccupied && 
@@ -170,6 +177,13 @@ bool AEchoCharacter::CanArm()
 	return ActionState == EActionState::EAS_Unoccupied &&
 		characterState == ECharacterState::ECS_Unequipped &&
 		equipMontage && obtainWeapon;
+}
+
+void AEchoCharacter::GetHit(const FVector& HitPoint)
+{
+	PlayHitSound(HitPoint);
+	ShowHitParticle(HitPoint);
+
 }
 
 void AEchoCharacter::Disarm()

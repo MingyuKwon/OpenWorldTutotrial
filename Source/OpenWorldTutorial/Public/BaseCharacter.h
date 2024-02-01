@@ -19,33 +19,16 @@ public:
 	ABaseCharacter();
 	virtual void Tick(float DeltaTime) override;
 
-
-	UFUNCTION(BlueprintCallable)
-	void EnableObtainWeaponAttackCollision(bool isTrue);
-
 protected:
-	// Animation montages
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* attackMontage;
-
-	// Animation montages
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* HitReactMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* DeathMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Combat");
-	TArray<FName> AttackMontageSections;
-	UPROPERTY(EditAnywhere, Category = "Combat");
-	TArray<FName> DeathMontageSections;
-
 	//components
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* attribute;
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* fleshSound;
+
+	UFUNCTION(BlueprintCallable)
+	void EnableObtainWeaponAttackCollision(bool isTrue);
 
 	virtual void PlayHitSound(const FVector& Location);
 
@@ -55,9 +38,6 @@ protected:
 	virtual void ShowHitParticle(const FVector& Location);
 
 	virtual void HandleDamage(float DamageAmount);
-
-	virtual void PlayMontageSection(UAnimMontage* montage, const FName& SectionName);
-	virtual int32 PlayRandomMontageSection(UAnimMontage* montage, const TArray<FName>& SectionNames);
 	
 	virtual void BeginPlay() override;
 
@@ -70,8 +50,7 @@ protected:
 
 	virtual bool IsAlive();
 
-	void DisableCapsule();
-
+	virtual void DisableCapsule();
 
 	// playa montage function
 	virtual int32 PlayAttackMontage();
@@ -90,5 +69,24 @@ protected:
 
 	virtual void HitReact(const FVector& HitPoint);
 
+private:
+	void PlayMontageSection(UAnimMontage* montage, const FName& SectionName);
+	int32 PlayRandomMontageSection(UAnimMontage* montage, const TArray<FName>& SectionNames);
 
+	// Animation montages
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* attackMontage;
+
+	// Animation montages
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* HitReactMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* DeathMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Combat");
+	TArray<FName> AttackMontageSections;
+
+	UPROPERTY(EditAnywhere, Category = "Combat");
+	TArray<FName> DeathMontageSections;
 };

@@ -16,40 +16,15 @@ class OPENWORLDTUTORIAL_API AEnemy : public ABaseCharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AEnemy();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	void CheckPatrolTarget();
-
-	void CheckCombatTarget();
-
-	virtual void GetHit(const FVector& HitPoint) override;
-
+	//State
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
+	//State
 
-	virtual void Destroyed() override;
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	void MoveToTarget(AActor* Target);
-
-	AActor* ChoosePatrolTarget();
-
-	virtual void Attack() override;
-
-	virtual void Die() override;
-	virtual bool CanAttack() override;
-
-	virtual void HandleDamage(float DamageAmount) override;
-
-	UFUNCTION()
-	void PawnSeen(APawn* seenPawn);
+	// AActor
+	virtual void Tick(float DeltaTime) override;
 
 	virtual float TakeDamage(
 		float DamageAmount,
@@ -58,14 +33,36 @@ protected:
 		AActor* DamageCauser
 	) override;
 
+	virtual void Destroyed() override;
+	// AActor
+
+protected:
+	// AActor
+	virtual void BeginPlay() override;
+	// AActor
+
+	// ABaseCharacter
+	virtual void Die() override;
+
+	virtual void Attack() override;
+
+	virtual bool CanAttack() override;
+
+	virtual void HandleDamage(float DamageAmount) override;
+
+	virtual int32 PlayDeathMontage() override;
+
+	virtual void AttackEnd() override;
+	// ABaseCharacter
+	
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose deathPose;
 
-	bool InTargetInRange(AActor* Target, double radius);
-	
-	virtual int32 PlayDeathMontage() override;
-
 private:
+
+	//AI Behavior
+	void CheckPatrolTarget();
+	void CheckCombatTarget();
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;
@@ -80,7 +77,7 @@ private:
 	TSubclassOf<class AWeapon> WeaponClass;
 
 	UPROPERTY(EditAnywhere);
-	double CombatRadius = 500.f;
+	double CombatRadius = 1000.f;
 
 	UPROPERTY(EditAnywhere);
 	double AttackRadius = 150.f;
@@ -91,7 +88,6 @@ private:
 	FTimerHandle PatrolTimer;
 	void PatrolTimerFinished();
 
-	// Navigarion
 	UPROPERTY(EditAnywhere, Category = "Ai Navigation")
 	AActor* PatrolTarget;
 
@@ -101,8 +97,12 @@ private:
 	UPROPERTY();
 	class AAIController* AIController;
 
+	UPROPERTY(EditAnywhere, Category = "Moving")
+	float PatrollingSpeed = 125.f;
 
-	// AI Functions
+	UPROPERTY(EditAnywhere, Category = "Moving")
+	float ChasingSpeed = 300.f;
+
 	void HealthbarVisible(bool isTrue);
 	void LoseInterest();
 	void StartPatrolling();
@@ -113,18 +113,29 @@ private:
 	bool IsChasing();
 	bool IsAttacking();
 
-	UPROPERTY(EditAnywhere, Category = "Moving")
-	float PatrollingSpeed = 125.f;
-	UPROPERTY(EditAnywhere, Category = "Moving")
-	float ChasingSpeed = 300.f;
-
-	// Combat
 	void StartAttackTimer();
 	void ClearAttackTimer();
 	void ClearPatrolTimer();
+
 	FTimerHandle AttackTimer;
+
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float AttackTime = 0.5f;
-	
+
+	UFUNCTION()
+	void PawnSeen(APawn* seenPawn); // Call back for OnPawn Seen in SensingComponent
+
+	void MoveToTarget(AActor* Target);
+
+	AActor* ChoosePatrolTarget();
+
+	bool InTargetInRange(AActor* Target, double radius);
+	//AI Behavior
+
+
+	//IHitInterface
+	virtual void GetHit(const FVector& HitPoint) override;
+	//IHitInterface	
+
 	
 };

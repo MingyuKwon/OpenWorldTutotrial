@@ -21,6 +21,12 @@ public:
 	AWeapon();
 	void Equip(ACharacter* InParent, FName InSocketName);
 
+	void DeactiveEmberEffect();
+
+	void DisableSphereCollision();
+
+	void PlayEquipSound();
+
 	void AttachActortoSocket(ACharacter* InParent, const FName& InSocketName);
 
 	void EnableWeaponAttackCollision(bool isTrue);
@@ -28,14 +34,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	virtual void SphereOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
-	virtual void SphereOverlapEndCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
-
 	UFUNCTION()
 	void BoxOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	void ExecuteGetHit(FHitResult& hitResult);
+
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Weapon Category")
+	FVector BoxTraceExtent = FVector(5.f);
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Category")
+	bool bShowBoxDebug = false;
+
 	UPROPERTY(EditAnywhere, Category = "Weapon Category")
 	USoundBase* EquipSound;
 
@@ -50,6 +61,7 @@ private:
 
 	TArray<AActor*> IgnoreActors;
 
+	void BoxTrace(FHitResult& HitResult);
 
 	UPROPERTY(EditDefaultsOnly)
 	float Damage = 30.f;

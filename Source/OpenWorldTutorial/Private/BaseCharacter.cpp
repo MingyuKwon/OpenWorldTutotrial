@@ -15,7 +15,6 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
-
 }
 
 void ABaseCharacter::PlayHitSound(const FVector& Location)

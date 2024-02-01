@@ -19,13 +19,10 @@ class OPENWORLDTUTORIAL_API AEchoCharacter : public ABaseCharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AEchoCharacter();
 
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	FORCEINLINE void SetOverlappingItem(ATestItem* item) {nearItem = item;}
@@ -40,21 +37,25 @@ protected:
 	void MoveRight(float value);
 	void Turn(float value);
 	void LookUp(float value);
-	
-
-	virtual void Jump() override;
 	void EKeyPressed();
-
 	virtual void Attack() override;
+	virtual void Jump() override;
+	// callback to input
 
+	//Combat
 	virtual void AttackEnd() override;
-
 	virtual bool CanAttack() override;
-
-	void PlayEquipMontage(FName SectionName);
 	bool CanDisarm();
-
 	bool CanArm();
+	void PlayEquipMontage(FName SectionName);
+	void EquipWeapon(AWeapon* weapon);
+
+	//Combat
+
+
+	//IHitInterface
+	virtual void GetHit(const FVector& HitPoint) override;
+	//IHitInterface	
 
 	UFUNCTION(BlueprintCallable)
 	void Disarm();
