@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 #include "item/Weapon.h"
 #include "Component/AttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -14,6 +15,30 @@ ABaseCharacter::ABaseCharacter()
 
 	attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 
+}
+
+void ABaseCharacter::PlayHitSound(const FVector& Location)
+{
+	if (fleshSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), fleshSound, Location);
+	}
+}
+
+void ABaseCharacter::ShowHitParticle(const FVector& Location)
+{
+	if (HitParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, Location);
+	}
+}
+
+void ABaseCharacter::HandleDamage(float DamageAmount)
+{
+	if (attribute)
+	{
+		attribute->ReceiveDamage(DamageAmount);
+	}
 }
 
 void ABaseCharacter::BeginPlay()
@@ -28,6 +53,11 @@ void ABaseCharacter::Attack()
 
 void ABaseCharacter::Die()
 {
+}
+
+bool ABaseCharacter::IsAlive()
+{
+	return attribute && attribute->IsAlive();
 }
 
 void ABaseCharacter::PlayAttackMontage()

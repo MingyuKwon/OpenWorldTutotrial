@@ -42,9 +42,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* fleshSound;
 
+	virtual void PlayHitSound(const FVector& Location);
+
 	UPROPERTY(EditAnywhere, Category = "VFX")
 	UParticleSystem* HitParticles;
 
+	virtual void ShowHitParticle(const FVector& Location);
+
+	virtual void HandleDamage(float DamageAmount);
 
 	virtual void BeginPlay() override;
 
@@ -54,6 +59,8 @@ protected:
 	virtual void Attack();
 
 	virtual void Die();
+
+	virtual bool IsAlive();
 
 	// playa montage function
 	virtual void PlayAttackMontage();

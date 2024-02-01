@@ -26,11 +26,9 @@ public:
 
 	void CheckCombatTarget();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	virtual void GetHit(const FVector& HitPoint) override;
 
+	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 	virtual void Destroyed() override;
@@ -47,6 +45,9 @@ protected:
 	virtual void PlayAttackMontage() override;
 
 	virtual void Die() override;
+	virtual bool CanAttack() override;
+
+	virtual void HandleDamage(float DamageAmount) override;
 
 	UFUNCTION()
 	void PawnSeen(APawn* seenPawn);
@@ -59,7 +60,7 @@ protected:
 	) override;
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose deathPose = EDeathPose::EDP_Alive;
+	EDeathPose deathPose;
 
 	bool InTargetInRange(AActor* Target, double radius);
 	
@@ -99,6 +100,31 @@ private:
 
 	UPROPERTY();
 	class AAIController* AIController;
-	
 
+
+	// AI Functions
+	void HealthbarVisible(bool isTrue);
+	void LoseInterest();
+	void StartPatrolling();
+	void ChaseTarget();
+	bool isOutSideCombatRadius();
+	bool isOutSideAttackRadius();
+	bool isInSideAttackRadius();
+	bool IsChasing();
+	bool IsAttacking();
+
+	UPROPERTY(EditAnywhere, Category = "Moving")
+	float PatrollingSpeed = 125.f;
+	UPROPERTY(EditAnywhere, Category = "Moving")
+	float ChasingSpeed = 300.f;
+
+	// Combat
+	void StartAttackTimer();
+	void ClearAttackTimer();
+	void ClearPatrolTimer();
+	FTimerHandle AttackTimer;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float AttackTime = 0.8f;
+	
+	
 };
