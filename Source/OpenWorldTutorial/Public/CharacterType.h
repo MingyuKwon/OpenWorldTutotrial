@@ -21,7 +21,9 @@ enum class EDeathPose : uint8
 {
 	EDP_Death1 UMETA(DisplayName = "Death1"),
 	EDP_Death2 UMETA(DisplayName = "Death2"),
-	EDP_Death3 UMETA(DisplayName = "Death3")
+	EDP_Death3 UMETA(DisplayName = "Death3"),
+
+	EDP_Max UMETA(DisplayName = "MaxLimit")
 };
 
 UENUM(BlueprintType)

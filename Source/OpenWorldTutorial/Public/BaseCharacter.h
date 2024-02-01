@@ -35,6 +35,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* DeathMontage;
 
+	UPROPERTY(EditAnywhere, Category = "Combat");
+	TArray<FName> AttackMontageSections;
+	UPROPERTY(EditAnywhere, Category = "Combat");
+	TArray<FName> DeathMontageSections;
+
 	//components
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* attribute;
@@ -51,6 +56,9 @@ protected:
 
 	virtual void HandleDamage(float DamageAmount);
 
+	virtual void PlayMontageSection(UAnimMontage* montage, const FName& SectionName);
+	virtual int32 PlayRandomMontageSection(UAnimMontage* montage, const TArray<FName>& SectionNames);
+	
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
@@ -62,8 +70,12 @@ protected:
 
 	virtual bool IsAlive();
 
+	void DisableCapsule();
+
+
 	// playa montage function
-	virtual void PlayAttackMontage();
+	virtual int32 PlayAttackMontage();
+	virtual int32 PlayDeathMontage();
 
 	virtual bool CanAttack();
 

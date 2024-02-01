@@ -11,6 +11,7 @@
 #include "Animation/AnimMontage.h"
 
 
+
 // Sets default values
 AEchoCharacter::AEchoCharacter()
 {
@@ -130,35 +131,9 @@ void AEchoCharacter::Attack()
 		PlayAttackMontage();
 		ActionState = EActionState::EAS_Attacking;
 	}
-
 	
 }
 
-void AEchoCharacter::PlayAttackMontage()
-{
-	Super::PlayAttackMontage();
-
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && attackMontage)
-	{
-		AnimInstance->Montage_Play(attackMontage);
-		const int32 Selection = FMath::RandRange(0, 1);
-		FName SectionName = FName();
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Attack1");
-			break;
-		case 1:
-			SectionName = FName("Attack2");
-			break;
-		default:
-			break;
-		}
-
-		AnimInstance->Montage_JumpToSection(SectionName, attackMontage);
-	}
-}
 
 void AEchoCharacter::PlayEquipMontage(FName SectionName)
 {

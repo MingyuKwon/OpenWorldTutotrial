@@ -42,7 +42,6 @@ protected:
 	AActor* ChoosePatrolTarget();
 
 	virtual void Attack() override;
-	virtual void PlayAttackMontage() override;
 
 	virtual void Die() override;
 	virtual bool CanAttack() override;
@@ -64,6 +63,7 @@ protected:
 
 	bool InTargetInRange(AActor* Target, double radius);
 	
+	virtual int32 PlayDeathMontage() override;
 
 private:
 
@@ -124,7 +124,7 @@ private:
 	void ClearPatrolTimer();
 	FTimerHandle AttackTimer;
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float AttackTime = 0.8f;
+	float AttackTime = 0.5f;
 	
 	
 };

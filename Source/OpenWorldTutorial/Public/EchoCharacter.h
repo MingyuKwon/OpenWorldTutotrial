@@ -47,9 +47,6 @@ protected:
 
 	virtual void Attack() override;
 
-	// playa montage function
-	virtual void PlayAttackMontage() override;
-
 	virtual void AttackEnd() override;
 
 	virtual bool CanAttack() override;
@@ -67,7 +64,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void FinishingEquipping();
-
 
 private:
 	ECharacterState characterState = ECharacterState::ECS_Unequipped;
