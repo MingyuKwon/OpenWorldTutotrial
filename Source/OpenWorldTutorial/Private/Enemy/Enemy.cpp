@@ -188,7 +188,6 @@ void AEnemy::ClearPatrolTimer()
 void AEnemy::ClearAttackTimer()
 {
 	GetWorldTimerManager().ClearTimer(AttackTimer);
-	UE_LOG(LogTemp, Error, TEXT("ClearAttackTimer"));
 }
 
 void AEnemy::PawnSeen(APawn* seenPawn)

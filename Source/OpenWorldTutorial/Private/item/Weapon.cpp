@@ -93,14 +93,19 @@ void AWeapon::BeginPlay()
 
 void AWeapon::BoxOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, FString("Attack First"));
 	if (IsHasSameTag(OtherActor)) return;
 
 	FHitResult hitResult;
 	BoxTrace(hitResult);
 
+	GEngine->AddOnScreenDebugMessage(3, 1, FColor::Yellow, FString("Attack Second"));
+
 	if (hitResult.GetActor())
 	{
 		if (IsHasSameTag(hitResult.GetActor())) return;
+
+		GEngine->AddOnScreenDebugMessage(1, 1, FColor::Blue, FString("Attack Final Success"));
 
 		UGameplayStatics::ApplyDamage(
 			hitResult.GetActor(),
@@ -130,8 +135,11 @@ void AWeapon::ExecuteGetHit(FHitResult& hitResult)
 
 void AWeapon::BoxTrace(FHitResult& HitResult)
 {
-	const FVector Start = BoxTraceStart->GetComponentLocation();
-	const FVector End = BoxTraceEnd->GetComponentLocation();
+	//const FVector Start = BoxTraceStart->GetComponentLocation();
+	//const FVector End = BoxTraceEnd->GetComponentLocation();
+
+	const FVector Start = BoxTraceEnd->GetComponentLocation();
+	const FVector End = BoxTraceStart->GetComponentLocation();
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);
