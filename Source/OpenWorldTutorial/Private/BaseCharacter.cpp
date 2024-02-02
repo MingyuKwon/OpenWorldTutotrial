@@ -105,6 +105,15 @@ void ABaseCharacter::AttackEnd()
 
 }
 
+void ABaseCharacter::StopAttackMontage()
+{
+	UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
+	if (animInstance)
+	{
+		animInstance->Montage_Stop(0.25f, attackMontage);
+	}
+}
+
 void ABaseCharacter::GetHit(const FVector& HitPoint, AActor* Hitter)
 {
 	if (IsAlive() && Hitter)

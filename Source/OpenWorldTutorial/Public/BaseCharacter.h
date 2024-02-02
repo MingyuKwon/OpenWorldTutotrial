@@ -61,6 +61,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();
 
+	virtual void StopAttackMontage();
+
 	// montage blueprint function
 	UFUNCTION(BlueprintCallable)
 	void PlayHitReactMontage(const FName SectionName);
