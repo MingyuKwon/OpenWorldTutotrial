@@ -65,7 +65,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void PlayHitReactMontage(const FName SectionName);
 
-	virtual void GetHit(const FVector& HitPoint) override;
+	virtual void GetHit(const FVector& HitPoint);
 
 	virtual void HitReact(const FVector& HitPoint);
 

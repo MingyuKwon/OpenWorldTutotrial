@@ -65,21 +65,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 
 void AEnemy::GetHit(const FVector& HitPoint)
 {
-	//DRAW_SPHERE(HitPoint);
+	Super::GetHit(HitPoint);
+
 	HealthbarVisible(true);
-
-	if (IsAlive())
-	{
-		HitReact(HitPoint);
-	}
-	else
-	{
-		Die();
-	}
-
-	PlayHitSound(HitPoint);
-	ShowHitParticle(HitPoint);
-
 }
 
 void AEnemy::Destroyed()

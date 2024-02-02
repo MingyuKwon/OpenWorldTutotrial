@@ -102,6 +102,23 @@ bool ABaseCharacter::CanAttack()
 
 void ABaseCharacter::AttackEnd()
 {
+
+}
+
+void ABaseCharacter::GetHit(const FVector& HitPoint)
+{
+	if (IsAlive())
+	{
+		HitReact(HitPoint);
+	}
+	else
+	{
+		Die();
+	}
+
+	PlayHitSound(HitPoint);
+	ShowHitParticle(HitPoint);
+
 }
 
 void ABaseCharacter::PlayHitReactMontage(const FName SectionName)
@@ -115,10 +132,6 @@ void ABaseCharacter::PlayHitReactMontage(const FName SectionName)
 	}
 }
 
-void ABaseCharacter::GetHit(const FVector& HitPoint)
-{
-
-}
 
 void ABaseCharacter::HitReact(const FVector& HitPoint)
 {

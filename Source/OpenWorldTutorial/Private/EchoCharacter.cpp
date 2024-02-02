@@ -181,9 +181,7 @@ bool AEchoCharacter::CanArm()
 
 void AEchoCharacter::GetHit(const FVector& HitPoint)
 {
-	PlayHitSound(HitPoint);
-	ShowHitParticle(HitPoint);
-
+	Super::GetHit(HitPoint);
 }
 
 void AEchoCharacter::Disarm()
