@@ -105,11 +105,11 @@ void ABaseCharacter::AttackEnd()
 
 }
 
-void ABaseCharacter::GetHit(const FVector& HitPoint)
+void ABaseCharacter::GetHit(const FVector& HitPoint, AActor* Hitter)
 {
-	if (IsAlive())
+	if (IsAlive() && Hitter)
 	{
-		HitReact(HitPoint);
+		HitReact(Hitter->GetActorLocation());
 	}
 	else
 	{
@@ -153,21 +153,14 @@ void ABaseCharacter::HitReact(const FVector& HitPoint)
 	if (Theta >= -45.f && Theta <= 45.f)
 	{
 		Section = FName("Forward");
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, FString::Printf(TEXT("Forward - Theta: %f"), Theta));
 	}
 	else if (Theta >= -135.f && Theta < -45.f)
 	{
 		Section = FName("Left");
-		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Black, FString::Printf(TEXT("Left - Theta: %f"), Theta));
 	}
 	else if (Theta <= 135.f && Theta > 45.f)
 	{
 		Section = FName("Right");
-		GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Blue, FString::Printf(TEXT("Right - Theta: %f"), Theta));
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Yellow, FString::Printf(TEXT("Back - Theta: %f"), Theta));
 	}
 
 	PlayHitReactMontage(Section);

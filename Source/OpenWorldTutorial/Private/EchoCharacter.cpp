@@ -179,9 +179,10 @@ bool AEchoCharacter::CanArm()
 		equipMontage && obtainWeapon;
 }
 
-void AEchoCharacter::GetHit(const FVector& HitPoint)
+void AEchoCharacter::GetHit(const FVector& HitPoint, AActor* Hitter)
 {
-	Super::GetHit(HitPoint);
+	Super::GetHit(HitPoint, Hitter);
+	EnableObtainWeaponAttackCollision(false);
 }
 
 void AEchoCharacter::Disarm()

@@ -63,9 +63,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 }
 
 
-void AEnemy::GetHit(const FVector& HitPoint)
+void AEnemy::GetHit(const FVector& HitPoint, AActor* Hitter)
 {
-	Super::GetHit(HitPoint);
+	Super::GetHit(HitPoint, Hitter);
 
 	if (EnemyState != EEnemyState::EES_Dead)
 	{

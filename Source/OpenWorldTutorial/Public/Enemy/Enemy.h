@@ -134,7 +134,7 @@ private:
 
 
 	//IHitInterface
-	virtual void GetHit(const FVector& HitPoint) override;
+	virtual void GetHit(const FVector& HitPoint, AActor* Hitter) override;
 	//IHitInterface	
 
 	

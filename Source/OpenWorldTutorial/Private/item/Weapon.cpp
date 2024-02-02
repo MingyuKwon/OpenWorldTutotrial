@@ -129,7 +129,7 @@ void AWeapon::ExecuteGetHit(FHitResult& hitResult)
 	IHitInterface* hitInterface = Cast<IHitInterface>(hitResult.GetActor());
 	if (hitInterface)
 	{
-		hitInterface->GetHit(hitResult.ImpactPoint);
+		hitInterface->GetHit(hitResult.ImpactPoint, GetOwner());
 	}
 }
 
