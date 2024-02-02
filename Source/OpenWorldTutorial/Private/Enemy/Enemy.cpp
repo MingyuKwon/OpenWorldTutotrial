@@ -67,7 +67,12 @@ void AEnemy::GetHit(const FVector& HitPoint)
 {
 	Super::GetHit(HitPoint);
 
-	HealthbarVisible(true);
+	if (EnemyState != EEnemyState::EES_Dead)
+	{
+		HealthbarVisible(true);
+	}
+	
+	ClearPatrolTimer();
 }
 
 void AEnemy::Destroyed()
@@ -140,6 +145,7 @@ void AEnemy::Die()
 	DisableCapsule();
 	SetLifeSpan(5.f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	EnableObtainWeaponAttackCollision(false);
 }
 
 void AEnemy::AttackEnd()
