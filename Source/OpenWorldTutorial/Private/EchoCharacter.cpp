@@ -154,6 +154,12 @@ void AEchoCharacter::EquipWeapon(AWeapon* weapon)
 	obtainWeapon = weapon;
 }
 
+float AEchoCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	HandleDamage(DamageAmount);
+	return DamageAmount;
+}
+
 void AEchoCharacter::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;

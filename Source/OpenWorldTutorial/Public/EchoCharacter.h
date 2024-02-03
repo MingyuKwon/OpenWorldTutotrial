@@ -49,7 +49,7 @@ protected:
 	bool CanArm();
 	void PlayEquipMontage(FName SectionName);
 	void EquipWeapon(AWeapon* weapon);
-
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	//Combat
 
 
