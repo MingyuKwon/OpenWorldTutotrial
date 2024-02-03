@@ -24,6 +24,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UOverlayWidget> OverlayClass;
 
-
 	UOverlayWidget* overlay;
-	};
+
+public:
+	FORCEINLINE UOverlayWidget* GetWidget() const { return overlay;}
+};

@@ -11,7 +11,8 @@ class USpringArmComponent;
 class UCameraComponent;
 class ATestItem;
 class UAnimMontage;
-
+class AOverlayHUD;
+class UOverlayWidget;
 
 UCLASS()
 class OPENWORLDTUTORIAL_API AEchoCharacter : public ABaseCharacter
@@ -31,6 +32,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	
 
 	// callback to input
 	void MoveForward(float value);
@@ -86,5 +89,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* equipMontage;
+
+	UPROPERTY()
+	UOverlayWidget* overlayWidget;
+
+	void InitializeSceenOverlapWIdget();
 
 };

@@ -9,6 +9,9 @@
 #include "TestItem.h"
 #include "item/Weapon.h"
 #include "Animation/AnimMontage.h"
+#include "HUD/OverlayHUD.h"
+#include "HUD/OverlayWidget.h"
+#include "Component/AttributeComponent.h"
 
 
 
@@ -45,6 +48,29 @@ void AEchoCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	Tags.Add(FName("EngagableTarget"));
+
+	InitializeSceenOverlapWIdget();
+}
+
+void AEchoCharacter::InitializeSceenOverlapWIdget()
+{
+	APlayerController* controller = Cast<APlayerController>(GetController());
+	if (controller)
+	{
+		AOverlayHUD* overlayHud = Cast<AOverlayHUD>(controller->GetHUD());
+		if (overlayHud)
+		{
+			overlayWidget = overlayHud->GetWidget();
+
+			if (overlayWidget && attribute)
+			{
+				overlayWidget->SetHealthBarPercent(attribute->GetHealthPercent());
+				overlayWidget->SetStaminaBarPercent(0.7f);
+				overlayWidget->SetGold(0);
+				overlayWidget->SetSoul(0);
+			}
+		}
+	}
 }
 
 void AEchoCharacter::MoveForward(float value)

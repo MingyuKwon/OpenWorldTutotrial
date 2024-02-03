@@ -28,7 +28,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* StaminaBar;
 
+	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* coinAmount;
 
+	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* soulAmount;
 };
