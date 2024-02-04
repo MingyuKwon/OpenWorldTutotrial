@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BaseCharacter.h"
 #include "CharacterType.h"
+#include "PickupInterface.h"
 #include "EchoCharacter.generated.h"
 
 class USpringArmComponent;
@@ -15,7 +16,7 @@ class AOverlayHUD;
 class UOverlayWidget;
 
 UCLASS()
-class OPENWORLDTUTORIAL_API AEchoCharacter : public ABaseCharacter
+class OPENWORLDTUTORIAL_API AEchoCharacter : public ABaseCharacter, public IPickupInterface
 {
 	GENERATED_BODY()
 
@@ -26,14 +27,14 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	FORCEINLINE void SetOverlappingItem(ATestItem* item) {nearItem = item;}
 	FORCEINLINE ECharacterState GetCharacterState() const { return characterState; }
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
+	virtual void SetOverlappingItem(class ATestItem* Item) override;
+	virtual void AddSouls(class ASoul* Soul) override;
 
 	// callback to input
 	void MoveForward(float value);

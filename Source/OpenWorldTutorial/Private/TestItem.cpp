@@ -4,7 +4,7 @@
 #include "TestItem.h"
 #include "OpenWorldTutorial/DrawDebugMacro.h"
 #include "Components/SphereComponent.h"
-#include "EchoCharacter.h"
+#include "PickupInterface.h"
 #include "NiagaraComponent.h"
 
 // Sets default values
@@ -38,20 +38,20 @@ void ATestItem::BeginPlay()
 
 void ATestItem::SphereOverlapBeginCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	AEchoCharacter* character = Cast<AEchoCharacter>(OtherActor);
-	if (character)
+	IPickupInterface* hitInterface = Cast<IPickupInterface>(OtherActor);
+	if (hitInterface)
 	{
-		character->SetOverlappingItem(this);
+		hitInterface->SetOverlappingItem(this);
 	}
 	
 }
 
 void ATestItem::SphereOverlapEndCallback( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	AEchoCharacter* character = Cast<AEchoCharacter>(OtherActor);
-	if (character)
+	IPickupInterface* hitInterface = Cast<IPickupInterface>(OtherActor);	
+	if (hitInterface)
 	{
-		character->SetOverlappingItem(nullptr);
+		hitInterface->SetOverlappingItem(nullptr);
 	}
 }
 

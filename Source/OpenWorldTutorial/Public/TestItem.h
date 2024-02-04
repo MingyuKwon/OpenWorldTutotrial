@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "PickupInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TestItem.generated.h"
@@ -16,7 +17,7 @@ enum class EItemState : uint8
 };
 
 UCLASS()
-class OPENWORLDTUTORIAL_API ATestItem : public AActor
+class OPENWORLDTUTORIAL_API ATestItem : public AActor, public IPickupInterface
 {
 	GENERATED_BODY()
 	
@@ -45,7 +46,6 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	class UNiagaraComponent* EmbersEffect;
-
 
 private:
 	template<typename T>

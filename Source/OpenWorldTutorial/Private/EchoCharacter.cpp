@@ -11,6 +11,7 @@
 #include "Animation/AnimMontage.h"
 #include "HUD/OverlayHUD.h"
 #include "HUD/OverlayWidget.h"
+#include "item/Soul.h"
 #include "Component/AttributeComponent.h"
 
 
@@ -50,6 +51,16 @@ void AEchoCharacter::BeginPlay()
 	Tags.Add(FName("EngagableTarget"));
 
 	InitializeSceenOverlapWIdget();
+}
+
+void AEchoCharacter::SetOverlappingItem(ATestItem* Item)
+{
+	nearItem = Item;
+}
+
+void AEchoCharacter::AddSouls(ASoul* Soul)
+{
+
 }
 
 void AEchoCharacter::InitializeSceenOverlapWIdget()
