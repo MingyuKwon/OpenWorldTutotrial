@@ -13,6 +13,7 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "Perception/PawnSensingComponent.h"
 #include "item/Weapon.h"
+#include "item/Soul.h"
 
 
 AEnemy::AEnemy()
@@ -159,6 +160,8 @@ void AEnemy::Die()
 	SetLifeSpan(5.f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	EnableObtainWeaponAttackCollision(false);
+
+	GetWorld()->SpawnActor<ASoul>(SoulClass, GetActorLocation() + FVector(0.f, 0.f, 75.f), GetActorRotation());
 }
 
 void AEnemy::AttackEnd()

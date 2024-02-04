@@ -59,6 +59,8 @@ protected:
 	EDeathPose deathPose;
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TSubclassOf<class ASoul> SoulClass;
 
 	//AI Behavior
 	void CheckPatrolTarget();

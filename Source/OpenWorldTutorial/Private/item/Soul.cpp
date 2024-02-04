@@ -10,10 +10,9 @@ void ASoul::SphereOverlapBeginCallback(UPrimitiveComponent* OverlappedComponent,
 	if (pickupInterface)
 	{
 		pickupInterface->AddSouls(this);
+		SpwanPickupSystem();
+		SpwanPickupSound();
+
+		Destroy();
 	}
-
-	SpwanPickupSystem();
-	SpwanPickupSound();
-
-	Destroy();
 }
