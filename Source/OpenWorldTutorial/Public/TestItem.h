@@ -47,12 +47,23 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	class UNiagaraComponent* EmbersEffect;
 
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* PickupEffect;
+
+	virtual void SpwanPickupSystem();
+	virtual void SpwanPickupSound();
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* PickupSound;
+
 private:
 	template<typename T>
 	T Avg(T first, T second);
 
 	UPROPERTY(VisibleDefaultsOnly)
 	float runningTime;
+
+	
 	
 };
 
