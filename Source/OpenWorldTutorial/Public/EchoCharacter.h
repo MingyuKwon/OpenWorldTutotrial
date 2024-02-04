@@ -53,6 +53,7 @@ protected:
 	void PlayEquipMontage(FName SectionName);
 	void EquipWeapon(AWeapon* weapon);
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	
 	//Combat
 
 
@@ -94,5 +95,7 @@ private:
 	UOverlayWidget* overlayWidget;
 
 	void InitializeSceenOverlapWIdget();
+
+	void SetHealthHUD();
 
 };

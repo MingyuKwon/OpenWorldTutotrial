@@ -61,10 +61,10 @@ void AEchoCharacter::InitializeSceenOverlapWIdget()
 		if (overlayHud)
 		{
 			overlayWidget = overlayHud->GetWidget();
+			SetHealthHUD();
 
 			if (overlayWidget && attribute)
 			{
-				overlayWidget->SetHealthBarPercent(attribute->GetHealthPercent());
 				overlayWidget->SetStaminaBarPercent(0.7f);
 				overlayWidget->SetGold(0);
 				overlayWidget->SetSoul(0);
@@ -183,7 +183,16 @@ void AEchoCharacter::EquipWeapon(AWeapon* weapon)
 float AEchoCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	HandleDamage(DamageAmount);
+	SetHealthHUD();
 	return DamageAmount;
+}
+
+void AEchoCharacter::SetHealthHUD()
+{
+	if (overlayWidget && attribute)
+	{
+		overlayWidget->SetHealthBarPercent(attribute->GetHealthPercent());
+	}
 }
 
 void AEchoCharacter::AttackEnd()
