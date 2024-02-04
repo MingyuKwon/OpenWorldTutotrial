@@ -60,7 +60,12 @@ void AEchoCharacter::SetOverlappingItem(ATestItem* Item)
 
 void AEchoCharacter::AddSouls(ASoul* Soul)
 {
-
+	if (attribute && overlayWidget)
+	{
+		attribute->AddSouls(Soul->GetSoul());
+		overlayWidget->SetSoul(attribute->GetSoul());
+	}
+	
 }
 
 void AEchoCharacter::InitializeSceenOverlapWIdget()
